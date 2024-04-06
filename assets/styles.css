@@ -1,0 +1,158 @@
+:root {
+    --primary: #d0ccda;
+    --secondary: #9caea9;
+    --tertiary: #788585;
+    --light-dark: #6f6866;
+    --dark: #38302e;
+    --border-radius: 10px;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--primary);
+    margin: 0;
+    padding: 0;
+    font-family: "IBM Plex Sans", sans-serif;
+    color: var(--dark);
+    line-height: 1.5;
+    font-size: 16px;
+}
+
+header {
+    padding: 20px;
+    text-align: center;
+    flex-grow: 1;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-weight: 700;
+    margin: 0;
+    color: var(--dark);
+    line-height: 1.25;
+}
+
+main {
+    margin: 20px 15px;
+    display: flex;
+    justify-content: space-between;
+}
+
+p {
+    font-size: 1.2em;
+    line-height: 1em;
+}
+
+.sidebar {
+    width: 20%; /* Adjust width as needed */
+    min-width: 225px;
+    max-height: 500px;
+    padding: 10px;
+}
+
+.today-weather-card {
+    display: flex;
+    flex-grow: 1; /* Take up remaining vertical space */
+    margin-bottom: 40px; /* Add some space between today's weather and forecast cards */
+}
+
+.weather-section {
+    flex-grow: 1; /* Occupy remaining space */
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    padding: 0 20px 20px 20px;
+}
+
+/* Forecast cards row */
+.forecast-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: stretch;
+    flex-grow: 1;
+    flex-wrap: nowrap; /* Ensure cards stay in a single row */
+    overflow-x: auto; /* Add horizontal scrolling if needed */
+}
+
+.btn {
+    font-size: 1.3rem;
+    text-decoration: none;
+    padding: 6px 5px;
+    width: 100%;
+    display: block;
+    margin: 5px 0;
+    border-radius: var(--border-radius);
+    color: var(--primary);
+    border: none;
+    outline: none;
+    background-color: var(--light-dark);
+    box-shadow: 3px 3px var(--dark);
+    transform: translate(-1px, -1px);
+}
+
+.btn:hover {
+    color: var(--primary);
+    background-color: var(--tertiary);
+    transform: translate(0, 0);
+    box-shadow: 2px 2px var(--dark);
+}
+
+/* CARDS */
+.card {
+    margin: 10px 0 10px 10px;
+    border: 3px solid var(--dark);
+    border-radius: var(--border-radius);
+    flex-basis: calc(25% - 8px);
+    flex: 1 1 250px; 
+    min-width: 175px;
+}
+
+.card-header {
+    color: var(--primary);
+    background-color: var(--dark);
+    padding: 2.5%;
+}
+
+.card-body {
+    padding: 2.5%;
+}
+
+/* FORM */
+.form-label,
+.form-input,
+.form-textarea {
+    display: block;
+}
+
+.form-label {
+    font-size: 1.1rem;
+    margin: 0 0 0 5px;
+}
+
+.form-input {
+    width: 100%;
+    padding: 3%;
+    margin: 5px 0;
+    font-size: 1.2rem;
+    border: 2px solid var(--light-dark);
+    border-radius: var(--border-radius);
+}
+
+/* FLEX CONTENT */
+.flex-row {
+    display: flex;
+}
+
+.flex-column {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
