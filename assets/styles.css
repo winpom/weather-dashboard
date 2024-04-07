@@ -50,8 +50,9 @@ p {
     line-height: 1em;
 }
 
+
 .sidebar {
-    width: 20%; /* Adjust width as needed */
+    width: 20%; 
     min-width: 225px;
     max-height: 500px;
     padding: 10px;
@@ -123,6 +124,7 @@ p {
 
 .card-body {
     padding: 2.5%;
+    line-height: .8em;
 }
 
 /* FORM */

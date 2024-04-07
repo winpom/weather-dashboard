@@ -3,6 +3,22 @@ const cityInputEl = document.querySelector('#city');
 const cityButtonsEl = document.querySelector('#city-buttons');
 const forecastContainerEl = document.querySelector('#forecast-container');
 const citySearchEl = document.querySelector('#city-search-term');
+const searchHistoryEl = document.querySelector('#search-history');
+
+let searchHistory = JSON.parse(localStorage.getItem("search")) || [];
+
+const renderSearchHistory = () => {
+    searchHistoryEl.innerHTML = ''; // Clear previous content
+    searchHistory.forEach(city => {
+        const historyItem = document.createElement('div');
+        historyItem.textContent = city;
+        historyItem.classList.add("card-body");
+        searchHistoryEl.appendChild(historyItem);
+    });
+};
+
+// Render search history initially
+renderSearchHistory();
 
 // Hide the weather section initially
 document.getElementById('weather-section').style.display = 'none';
@@ -12,6 +28,7 @@ const showWeatherSection = function () {
     document.getElementById('weather-section').style.display = 'block';
 };
 
+// Launches the city search function based on user input
 const formSubmitHandler = function (event) {
     event.preventDefault();
 
@@ -22,19 +39,28 @@ const formSubmitHandler = function (event) {
 
         forecastContainerEl.innerHTML = '';
         cityInputEl.value = '';
+        searchHistory.push(city);
+        localStorage.setItem("search", JSON.stringify(searchHistory));
+        renderSearchHistory();
     } else {
         alert('Please enter a City Name');
     }
+
 };
 
+// Launches the city search function based on the city button pressed
 const buttonClickHandler = function (event) {
     const city = event.target.getAttribute('city');
     if (city) {
         getCityForecast(city);
         forecastContainerEl.innerHTML = '';
+        searchHistory.push(city);
+        localStorage.setItem("search", JSON.stringify(searchHistory));
+        renderSearchHistory();
     }
 };
 
+// Function that pulls in the weather data from the API using the city inputted by the buttonClickHandler or formSubmitHandler functions
 const getCityForecast = function (city) {
     const weatherAppAPIKey = "afdd48f219a0ca8e18ed477c2d0cee05";
     const apiUrl = `https://api.openweathermap.org/geo/1.0/direct?q=${city}&appid=${weatherAppAPIKey}`;
@@ -68,6 +94,7 @@ const getCityForecast = function (city) {
         });
 };
 
+// Renders a card onsite showing the weather information for today
 const createTodayWeatherCard = function (today) {
     const todayWeatherCard = document.createElement('div');
     todayWeatherCard.classList.add('card', 'today-weather-card');
@@ -88,11 +115,11 @@ const createTodayWeatherCard = function (today) {
     const todayCardTemp = document.createElement('p');
     todayCardTemp.classList.add("card-text");
     todayCardTemp.textContent = `Temperature: ${today.main.temp}°F`;
-   
+
     const todayCardWind = document.createElement('p');
     todayCardWind.classList.add("card-text");
     todayCardWind.textContent = `Wind: ${today.wind.speed} mph`;
-   
+
     const todayCardHum = document.createElement('p');
     todayCardHum.classList.add("card-text");
     todayCardHum.textContent = `Humidity: ${today.main.humidity}%`;
@@ -103,6 +130,7 @@ const createTodayWeatherCard = function (today) {
     return todayWeatherCard;
 };
 
+// Renders a card onsite showing the weather forecast for the next four-five
 const createForecastCard = function (forecast) {
     const dateParts = forecast.dt_txt.split(' ')[0];
     // Convert the date string to a human-readable format
@@ -110,14 +138,14 @@ const createForecastCard = function (forecast) {
 
     const forecastCard = document.createElement('div');
     forecastCard.classList.add("card", "w-75", "task-card", "my-3");
-    
+
     const cardHeader = document.createElement('div');
     cardHeader.classList.add("card-header", "h4");
     cardHeader.textContent = date;
-   
+
     const cardBody = document.createElement('div');
     cardBody.classList.add("card-body");
-   
+
     const cardIcon = document.createElement('p');
     cardIcon.classList.add("card-text");
     cardIcon.textContent = `Weather: ${getWeatherIcon(forecast.weather[0].main)}`;
@@ -125,11 +153,11 @@ const createForecastCard = function (forecast) {
     const cardTemp = document.createElement('p');
     cardTemp.classList.add("card-text");
     cardTemp.textContent = `Temperature: ${forecast.main.temp}°F`;
-  
+
     const cardWind = document.createElement('p');
     cardWind.classList.add("card-text");
     cardWind.textContent = `Wind: ${forecast.wind.speed} mph`;
- 
+
     const cardHum = document.createElement('p');
     cardHum.classList.add("card-text");
     cardHum.textContent = `Humidity: ${forecast.main.humidity}%`;
@@ -158,6 +186,7 @@ const getWeatherIcon = function (weatherCondition) {
     }
 };
 
+// This function adds the weather cards to the site
 const displayWeather = function (forecast, searchTerm) {
     if (forecast.length === 0) {
         forecastContainerEl.textContent = 'No forecast found.';
@@ -187,5 +216,6 @@ const displayWeather = function (forecast, searchTerm) {
     showWeatherSection();
 };
 
+// Event listeners to trigger the above functions
 userFormEl.addEventListener('submit', formSubmitHandler);
 cityButtonsEl.addEventListener('click', buttonClickHandler);

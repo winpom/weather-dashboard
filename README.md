@@ -4,6 +4,7 @@
 
 This Weather App provides users with current weather information and a 5-day forecast for any city worldwide. Users can search for a city and view the current weather conditions, including temperature, wind speed, and humidity, as well as the forecast for the next five days.
 
+Live Site URL: https://winpom.github.io/weather-dashboard/
 ![Site](./assets/images/site.png)
 
 ## Features
