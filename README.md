@@ -4,19 +4,24 @@
 
 This Weather App provides users with current weather information and a 5-day forecast for any city worldwide. Users can search for a city and view the current weather conditions, including temperature, wind speed, and humidity, as well as the forecast for the next five days.
 
+![Site](./assets/images/site.png)
+
 ## Features
 
 - **Search for City**: Users can search for any city to view its current weather conditions and 5-day forecast.
+![City Search](./assets/images/search.png)
 - **Today's Weather**: The app displays today's weather information, including temperature, wind speed, and humidity, at the top of the page.
+![Today's Weather](./assets/images/today.png)
 - **5-Day Forecast**: Users can view the weather forecast for the next five days, with each day's forecast displayed in a separate card.
+![Upcoming Weather](./assets/images/upcoming.png)
 - **Dynamic Weather Icons**: Weather icons or emojis representing different weather conditions are displayed alongside the forecast, making it easy for users to understand the weather at a glance.
+![Full Site in Action](./assets/images/site.png)
 
 ## Technologies Used
 
 - HTML5
 - CSS3
 - JavaScript
-- Bootstrap
 - Fetch API
 
 ## Installation
