@@ -10,13 +10,20 @@ Live Site URL: https://winpom.github.io/weather-dashboard/
 ## Features
 
 - **Search for City**: Users can search for any city to view its current weather conditions and 5-day forecast.
+
 ![City Search](./assets/images/search.png)
 - **Today's Weather**: The app displays today's weather information, including temperature, wind speed, and humidity, at the top of the page.
+
 ![Today's Weather](./assets/images/today.png)
 - **5-Day Forecast**: Users can view the weather forecast for the next five days, with each day's forecast displayed in a separate card.
+
 ![Upcoming Weather](./assets/images/upcoming.png)
 - **Dynamic Weather Icons**: Weather icons or emojis representing different weather conditions are displayed alongside the forecast, making it easy for users to understand the weather at a glance.
-![Full Site in Action](./assets/images/site.png)
+
+![Full Site in Action](./assets/images/full-site.png)
+- **Search History**: Each city search, whether by button or user input, will be logged in Local Storage and visible onsite!
+
+![Search History](./assets/images/search-history.png)
 
 ## Technologies Used
 

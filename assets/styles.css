@@ -70,6 +70,7 @@ p {
     flex-wrap: wrap;
     flex-direction: column;
     padding: 0 20px 20px 20px;
+    max-height: 20px
 }
 
 /* Forecast cards row */
@@ -124,6 +125,17 @@ p {
 
 .card-body {
     padding: 2.5%;
+    line-height: .8em;
+}
+
+.today-card-header {
+    color: var(--primary);
+    background-color: var(--dark);
+    padding: 25px;
+}
+
+.today-card-body {
+    padding: 25px;
     line-height: .8em;
 }
 

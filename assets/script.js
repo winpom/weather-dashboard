@@ -1,12 +1,14 @@
 const userFormEl = document.querySelector('#user-form');
 const cityInputEl = document.querySelector('#city');
 const cityButtonsEl = document.querySelector('#city-buttons');
+const todayContainerEl = document.querySelector('#today-weather');
 const forecastContainerEl = document.querySelector('#forecast-container');
 const citySearchEl = document.querySelector('#city-search-term');
 const searchHistoryEl = document.querySelector('#search-history');
 
 let searchHistory = JSON.parse(localStorage.getItem("search")) || [];
 
+// Render the initial search history
 const renderSearchHistory = () => {
     searchHistoryEl.innerHTML = ''; // Clear previous content
     searchHistory.forEach(city => {
@@ -20,12 +22,14 @@ const renderSearchHistory = () => {
 // Render search history initially
 renderSearchHistory();
 
-// Hide the weather section initially
+// Hide the weather and search history sections initially
 document.getElementById('weather-section').style.display = 'none';
+document.getElementById('search-history-section').style.display = 'none';
 
-// Show the weather section when the user searches for a city
+// Show the weather and search section when the user searches for a city
 const showWeatherSection = function () {
     document.getElementById('weather-section').style.display = 'block';
+    document.getElementById('search-history-section').style.display = 'block';
 };
 
 // Launches the city search function based on user input
@@ -72,21 +76,21 @@ const getCityForecast = function (city) {
             else {
                 alert(`Error:${response.statusText}`);
             }
-        }).then(function (data) {
+        }).then(function (geoData) {
             console.log("--------- First request with geolocation --------")
-            console.log(data);
+            console.log(geoData);
 
-            const latitude = data[0].lat;
-            const longitude = data[0].lon;
+            const latitude = geoData[0].lat;
+            const longitude = geoData[0].lon;
             console.log(latitude, longitude);
 
             const forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&units=imperial&appid=${weatherAppAPIKey}`
             fetch(forecastUrl).then(function (response2) {
                 return response2.json();
-            }).then(function (data2) {
+            }).then(function (forecastData) {
                 console.log("--------- Second request with forecast --------")
-                console.log(data2);
-                displayWeather(data2.list, city);
+                console.log(forecastData);
+                displayWeather(forecastData.list, city);
             })
         })
         .catch(function (error) {
@@ -99,18 +103,19 @@ const createTodayWeatherCard = function (today) {
     const todayWeatherCard = document.createElement('div');
     todayWeatherCard.classList.add('card', 'today-weather-card');
 
-    const todayDate = new Date(today.dt_txt.split(' ')[0]).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+    const todayDate = dayjs().format("M/D/YYYY");
+    const todayWeatherIconUrl = `https://openweathermap.org/img/w/${today.weather[0].icon}.png`
 
-    const todayCardHeader = document.createElement('h1');
-    todayCardHeader.classList.add("card-header", "h1");
+    const todayCardHeader = document.createElement('h2');
+    todayCardHeader.classList.add("today-card-header", "h2");
     todayCardHeader.innerHTML = `Today,<br>${todayDate}`;
 
     const todayCardBody = document.createElement('div');
-    todayCardBody.classList.add("card-body");
+    todayCardBody.classList.add("today-card-body");
 
-    const todayCardIcon = document.createElement('p');
-    todayCardIcon.classList.add("card-text");
-    todayCardIcon.textContent = `Weather: ${getWeatherIcon(today.weather[0].main)}`;
+    const todayCardIcon = document.createElement('img');
+    todayCardIcon.setAttribute("src", todayWeatherIconUrl);
+    todayCardIcon.textContent = `Weather: ${todayCardIcon}`;
 
     const todayCardTemp = document.createElement('p');
     todayCardTemp.classList.add("card-text");
@@ -131,59 +136,39 @@ const createTodayWeatherCard = function (today) {
 };
 
 // Renders a card onsite showing the weather forecast for the next four-five
-const createForecastCard = function (forecast) {
-    const dateParts = forecast.dt_txt.split(' ')[0];
-    // Convert the date string to a human-readable format
-    const date = new Date(dateParts).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+const createForecastCard = function (forecastData) {
+    const weatherIconUrl = `https://openweathermap.org/img/w/${forecastData.weather[0].icon}.png`
 
     const forecastCard = document.createElement('div');
-    forecastCard.classList.add("card", "w-75", "task-card", "my-3");
+    forecastCard.classList.add("card", "task-card");
 
     const cardHeader = document.createElement('div');
     cardHeader.classList.add("card-header", "h4");
-    cardHeader.textContent = date;
+    cardHeader.textContent = dayjs(forecastData.dt_txt).format("M/D/YYYY");
 
     const cardBody = document.createElement('div');
     cardBody.classList.add("card-body");
 
-    const cardIcon = document.createElement('p');
-    cardIcon.classList.add("card-text");
-    cardIcon.textContent = `Weather: ${getWeatherIcon(forecast.weather[0].main)}`;
+    const cardIcon = document.createElement('img');
+    cardIcon.setAttribute("src", weatherIconUrl);
+    cardIcon.textContent = `Weather: ${cardIcon}`;
 
     const cardTemp = document.createElement('p');
     cardTemp.classList.add("card-text");
-    cardTemp.textContent = `Temperature: ${forecast.main.temp}°F`;
+    cardTemp.textContent = `Temperature: ${forecastData.main.temp}°F`;
 
     const cardWind = document.createElement('p');
     cardWind.classList.add("card-text");
-    cardWind.textContent = `Wind: ${forecast.wind.speed} mph`;
+    cardWind.textContent = `Wind: ${forecastData.wind.speed} mph`;
 
     const cardHum = document.createElement('p');
     cardHum.classList.add("card-text");
-    cardHum.textContent = `Humidity: ${forecast.main.humidity}%`;
+    cardHum.textContent = `Humidity: ${forecastData.main.humidity}%`;
 
     cardBody.append(cardIcon, cardTemp, cardWind, cardHum);
     forecastCard.append(cardHeader, cardBody);
 
     return forecastCard;
-};
-
-// Function to get weather icon or emoji based on weather condition
-const getWeatherIcon = function (weatherCondition) {
-    switch (weatherCondition.toLowerCase()) {
-        case 'clear':
-            return '☀️';
-        case 'clouds':
-            return '☁️';
-        case 'rain':
-            return '🌧️';
-        case 'snow':
-            return '❄️';
-        case 'thunderstorm':
-            return '⛈️';
-        default:
-            return '';
-    }
 };
 
 // This function adds the weather cards to the site

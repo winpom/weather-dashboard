@@ -35,7 +35,7 @@
                     <button city="San Diego" class="btn">San Diego</button>
                 </section>
             </section>
-            <section class="card">
+            <section class="card"  id="search-history-section">
                 <h4 class="card-header">Search History</h4>
                 <div id="search-history"></div>
             </section>
@@ -43,11 +43,13 @@
         <section id= "weather-section" class="weather-section">
             <h2>Showing Weather for: <b> <span id="city-search-term"></span></b> </h2>
             <div id="today-weather"></div>
-            <h3>The Next 4 Days</h3>
+            <h3>Upcoming City Forecast</h3>
             <div id="forecast-container" class="forecast-row"></div>
         </section>
     </main>
 </body>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.3/dayjs.min.js"
+integrity="sha256-iu/zLUB+QgISXBLCW/mcDi/rnf4m4uEDO0wauy76x7U=" crossorigin="anonymous"></script>
 <script src="./assets/script.js"></script>
 </html>
